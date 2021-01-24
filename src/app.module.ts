@@ -8,23 +8,24 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from "@nestjs/config";
 import configuration from './configuration';
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { join } from "path";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 
 
 @Module({
   imports: [
+    // Модуль обслуживания статических файлов
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'logs'),
-      exclude: ['/*'],
+      rootPath: `${__dirname}/logs/`,
+      serveRoot: `/logs/`,
     }),
+    // Модуль конфигурации
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
       cache: true,
     }),
-
+    // Модуль работы с СУБД
     TypeOrmModule.forRoot({
       name: 'znodePg',
       type: "postgres",
