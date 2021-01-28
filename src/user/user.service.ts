@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PostResponseInterface } from 'src/common/interfaces/post-response.interface';
-import { Connection } from 'typeorm';
+import { Connection, CreateDateColumn } from 'typeorm';
 import { AddUserDto } from './add-user.dto';
 import { PswUsersEntity } from './psw-user.entity';
 import { UserInterface } from './user.interface';
@@ -60,5 +59,12 @@ export class UserService {
             .createQueryBuilder(UsersEntity, 'user')
             .getMany();
         return users;
+    }
+
+    async testUser(): Promise<any> {
+        const qu = await this.dbConnect
+            .query(`SELECT func_increment(5)`)
+        
+        return qu[0].func_increment;
     }
 }

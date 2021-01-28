@@ -21,7 +21,7 @@ export class CommonValidationPipe implements PipeTransform<any> {
         return err.property
       })
       throw new HttpException(
-        `Переданы не валидные данные: ${values}`,
+        `Не валидный параметр: ${values}`,
         HttpStatus.BAD_REQUEST
       );
     }

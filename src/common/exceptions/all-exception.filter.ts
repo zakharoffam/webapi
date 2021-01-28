@@ -28,19 +28,33 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.stack
         : exception;
 
+    // Формирование объекта для добавление в лог iisnode
     const bodyForLog = {
+      timestamp: new Date(),
+      hash: 'Добавить хеш запроса',
       statusCode: status,
       message: message,
-      stack: stack,
-      timestamp: new Date().toISOString(),
-      path: request.url,
+      result: stack,
+      request: {
+        method: request.method,
+        url: request.url,
+        params: request.params,
+        query: request.query,
+        body: request.body,
+        user: 'Add user account',
+        userAgent: request.headers['user-agent']
+      },
     };
-
+    // Добавление в лог iisnode
     console.error(bodyForLog);
 
+    // Отправляем ответ пользователю
     response.status(status).json({
-      errorCode: status,
+      timestamp: new Date(),
+      hash: 'Добавить хеш запроса',
+      statusCode: status,
       message: message,
+      result: 'Error'
     });
   }
 }

@@ -1,7 +1,7 @@
 import { Controller, Get, HttpException, Query } from '@nestjs/common';
-import { GetResponseInterface } from 'src/common/interfaces/get-response.interface';
+import { ResponseInterface } from 'src/common/interfaces/response.interface';
+import { CommonValidationPipe } from 'src/common/pipes/common-validation.pipe';
 import { AuthUserDto } from './auth-user.dto';
-import { AuthUserPipe } from './auth-user.pipe';
 import { AuthService } from './auth.service';
 
 
@@ -14,12 +14,15 @@ export class AuthController {
      * @param userData
      */
     @Get('user')
-    async authUser(@Query(new AuthUserPipe) userData: AuthUserDto): Promise<GetResponseInterface | HttpException> {
+    async authUser(@Query(new CommonValidationPipe) userData: AuthUserDto): Promise<ResponseInterface> {
         const authUser = await this.authService.authUser(userData);
 
         if (authUser) return {
+            timestamp: new Date,
+            hash: '',
+            statusCode: 200,
             message: 'Пользователь аутентифицирован',
-            result: authUser
+            result: authUser,
         }
         else throw new HttpException('Пользователь не аутентифицирован', 401);
     }

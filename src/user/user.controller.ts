@@ -1,6 +1,5 @@
-import { Body, Controller, Get, HttpException, Post, Query } from '@nestjs/common';
-import { GetResponseInterface } from 'src/common/interfaces/get-response.interface';
-import { PostResponseInterface } from 'src/common/interfaces/post-response.interface';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
+import { ResponseInterface } from 'src/common/interfaces/response.interface';
 import { CommonValidationPipe } from 'src/common/pipes/common-validation.pipe';
 import { AddUserDto } from './add-user.dto';
 import { UserService } from './user.service';
@@ -11,29 +10,48 @@ export class UserController {
     constructor(private userService: UserService) {}
 
     @Get('user')
-    async getUser(@Query('ID', CommonValidationPipe) ID: number): Promise<GetResponseInterface | HttpException> {
+    async getUser(@Query('ID', CommonValidationPipe) ID: number): Promise<ResponseInterface> {
         const user = await this.userService.user(ID);
         if (user) return {
-            message: 'Пользователь найден',
+            timestamp: new Date,
+            hash: '',
+            statusCode: 200,
+            message: 'Найден 1 пользователь',
             result: user,
         }
-        else throw new HttpException('Пользователь не найден', 404);
+        else throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     }
 
     @Post('addUser')
-    async addUser(@Body(new AddUserPipe) user: AddUserDto): Promise<PostResponseInterface> {
+    async addUser(@Body(new AddUserPipe) user: AddUserDto): Promise<ResponseInterface> {
         const newUserId = await this.userService.addUser(user);
         return {
+            timestamp: new Date,
+            hash: '',
+            statusCode: 200,
             message: `Новый пользователь успешно создан c ID ${newUserId}`,
+            result: user,
         };
     }
 
     @Get('allUsers')
-    async allUsers(): Promise<GetResponseInterface> {
+    async allUsers(): Promise<ResponseInterface> {
         const users = await this.userService.allUser();
         return {
-            message: 'Пользователи',
+            timestamp: new Date,
+            hash: '',
+            statusCode: 200,
+            message: 'Найдено несколько пользователей',
             result: users,
         };
+    }
+
+    @Get('testUser')
+    async testUser(): Promise<any> {
+        const result = await this.userService.testUser();
+        return {
+            message: 'Test',
+            result: result,
+        }
     }
 }

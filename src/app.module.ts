@@ -10,8 +10,6 @@ import configuration from './configuration';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { CodifModule } from './codif/codif.module';
-import { PmModule } from './pm/pm.module';
 
 
 @Module({
@@ -57,8 +55,6 @@ import { PmModule } from './pm/pm.module';
     
     UserModule,
     AuthModule,
-    CodifModule,
-    PmModule,
   ],
   controllers: [AppController],
   providers: [AppService],
