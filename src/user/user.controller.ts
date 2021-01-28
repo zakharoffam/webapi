@@ -14,7 +14,6 @@ export class UserController {
         const user = await this.userService.user(ID);
         if (user) return {
             timestamp: new Date,
-            hash: '',
             statusCode: 200,
             message: 'Найден 1 пользователь',
             result: user,
@@ -27,7 +26,6 @@ export class UserController {
         const newUserId = await this.userService.addUser(user);
         return {
             timestamp: new Date,
-            hash: '',
             statusCode: 200,
             message: `Новый пользователь успешно создан c ID ${newUserId}`,
             result: user,
@@ -39,7 +37,6 @@ export class UserController {
         const users = await this.userService.allUser();
         return {
             timestamp: new Date,
-            hash: '',
             statusCode: 200,
             message: 'Найдено несколько пользователей',
             result: users,

@@ -19,7 +19,6 @@ export class AuthController {
 
         if (authUser) return {
             timestamp: new Date,
-            hash: '',
             statusCode: 200,
             message: 'Пользователь аутентифицирован',
             result: authUser,

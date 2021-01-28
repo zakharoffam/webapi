@@ -2,8 +2,8 @@ import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { AllExceptionsFilter } from "src/common/exceptions/all-exception.filter";
 import { AppModule } from "./app.module";
+import { logger } from "./common/middlewares/logger.middleware";
 /* import { RolesGuard } from './common/guard/roles.guard'; */
-/* import { LoggerMiddleware } from './logger.middleware'; */
 /* import { ValidationPipe } from './common/pipe/validation.pipe'; */
 
 
@@ -23,7 +23,7 @@ async function bootstrap() {
   /* app.useGlobalGuards(new RolesGuard()); */
 
   /* Можно использовать Middleware'ы глобально */
-  /* app.use(LoggerMiddleware); */
+  app.use(logger);
 
   /* Подключили глобальный фильтр-перехватчик всех исключений */
   app.useGlobalFilters(new AllExceptionsFilter());
